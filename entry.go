@@ -164,7 +164,7 @@ func getPackageName(f string) string {
 }
 
 // getCaller retrieves the name of the first non-logrus calling function
-func getCaller() *runtime.Frame {
+func getCaller(skip int) *runtime.Frame {
 
 	// cache this package's fully-qualified name
 	callerInitOnce.Do(func() {
@@ -174,7 +174,7 @@ func getCaller() *runtime.Frame {
 
 		// now that we have the cache, we can skip a minimum count of known-logrus functions
 		// XXX this is dubious, the number of frames may vary
-		minimumCallerDepth = knownLogrusFrames
+		minimumCallerDepth = knownLogrusFrames + skip
 	})
 
 	// Restrict the lookback frames to avoid runaway lookups

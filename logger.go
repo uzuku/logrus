@@ -29,6 +29,9 @@ type Logger struct {
 	// Flag for whether to log caller info (off by default)
 	ReportCaller bool
 
+	// When logrus is wrapped by other package, skip extra caller frames to report the real caller.
+	ExtraCallerDepth int
+
 	// The logging level the logger should log at. This is typically (and defaults
 	// to) `logrus.Info`, which allows Info(), Warn(), Error() and Fatal() to be
 	// logged.
@@ -339,6 +342,12 @@ func (logger *Logger) SetReportCaller(reportCaller bool) {
 	logger.mu.Lock()
 	defer logger.mu.Unlock()
 	logger.ReportCaller = reportCaller
+}
+
+func (logger *Logger) SetExtraCallerDepth(depth int) {
+	logger.mu.Lock()
+	defer logger.mu.Unlock()
+	logger.ExtraCallerDepth = depth
 }
 
 // ReplaceHooks replaces the logger hooks and returns the old ones
