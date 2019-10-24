@@ -218,7 +218,7 @@ func (entry Entry) log(level Level, msg string) {
 	entry.Level = level
 	entry.Message = msg
 	if entry.Logger.ReportCaller {
-		entry.Caller = getCaller()
+		entry.Caller = getCaller(entry.Logger.ExtraCallerDepth)
 	}
 
 	entry.fireHooks()
